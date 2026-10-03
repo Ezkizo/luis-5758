@@ -1,0 +1,15 @@
+{
+  "name": "snail-test",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.x"
+  },
+  "packageManager": "pnpm@11.15.1",
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm --filter client build && pnpm --filter server build",
+    "start": "pnpm --filter server start",
+    "heroku-prebuild": "corepack enable pnpm"
+  }
+}
