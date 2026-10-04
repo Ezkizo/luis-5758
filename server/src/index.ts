@@ -1,13 +1,10 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import { env } from './config/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-
-// Se cargan las variables de entorno desde el archivo .env
-dotenv.config();
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middlewares globales
 app.use(cors());
@@ -21,8 +18,11 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
+// Rutas
+app.use('/api/auth', authRoutes);
+
 app.use(errorHandler);
 // Arrancar el servidor
-app.listen(PORT, () => {
-  console.log(`Backend listo y escuchando en http://localhost:${PORT}`);
+app.listen(env.PORT, () => {
+  console.log(`Backend listo y escuchando en http://localhost:${env.PORT}`);
 });
