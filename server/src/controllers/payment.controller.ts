@@ -71,3 +71,18 @@ export const recharge = async (req: Request, res: Response) => {
     newBalance: currentBalance,
   });
 };
+
+export const getSuccessfulPayments = (req: Request, res: Response) => {
+  const { id: userId } = res.locals.user;
+  
+  const history = db.getUserTransactions(userId).map((tx) => {
+    // Se excluyen datos sensibles antes de enviarlos al cliente
+    const { payer_id, payer_email, ...cleanTransaction } = tx;
+    return cleanTransaction;
+  });
+  
+  res.status(200).json({
+    status: 'success',
+    data: history
+  });
+};

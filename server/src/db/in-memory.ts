@@ -11,7 +11,7 @@ export interface User {
 
 export interface Transaction {
   id: string;
-  status: 'approved' | 'rejected' | 'failed' | 'timeout';
+  status: 'approved' | 'rejected';
   status_detail: string;
   transaction_amount: number;
   date_created: string;
@@ -61,7 +61,7 @@ export const db = {
 
   getUserTransactions: (userId: string): Transaction[] => {
     return transactions
-      .filter(tx => tx.payer_id === userId)
+      .filter(tx => tx.payer_id === userId && tx.status === 'approved')
       .sort((a, b) => new Date(b.date_created).getTime() - new Date(a.date_created).getTime());
   }
 };
