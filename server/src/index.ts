@@ -3,6 +3,7 @@ import cors from 'cors';
 import { env } from './config/env.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import authRoutes from './routes/auth.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
 
 // Rutas
 app.use('/api/auth', authRoutes);
+app.use('/api/payments', paymentRoutes);
 
 app.use(errorHandler);
 // Arrancar el servidor
