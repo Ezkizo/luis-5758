@@ -37,21 +37,31 @@ export const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto' }}>
-      <h2>Iniciar Sesión en Snail Race</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input 
-          type="email" placeholder="Correo electrónico" required 
-          value={email} onChange={(e) => setEmail(e.target.value)} 
-        />
-        <input 
-          type="password" placeholder="Contraseña" required 
-          value={password} onChange={(e) => setPassword(e.target.value)} 
-        />
-        <button type="submit">Entrar</button>
-      </form>
-      <p>¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+    <div className="auth-container">
+      <div className="card auth-card">
+        <h2 className="auth-title">Iniciar Sesión en Snail Race</h2>
+        {error && <div className="auth-error">{error}</div>}
+        <form onSubmit={handleSubmit} className="auth-form">
+          <input 
+            className="auth-input"
+            type="email" 
+            placeholder="Correo electrónico" 
+            required 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <input 
+            className="auth-input"
+            type="password" 
+            placeholder="Contraseña" 
+            required 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          <button type="submit" className="primary-btn">Iniciar Sesión</button>
+        </form>
+        <p className="auth-link">¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link></p>
+      </div>
     </div>
   );
 };
