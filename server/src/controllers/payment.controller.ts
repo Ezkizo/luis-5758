@@ -56,11 +56,6 @@ export const recharge = async (req: Request, res: Response) => {
   });
 
   // 3. Actualizar saldo solo si fue aprobada
-  let currentBalance = db.findUserById(userId)?.balance || 0;
-  if (snailPayResponse.status === "approved") {
-    currentBalance = db.updateUserBalance(userId, amount);
-  }
-
   // 4. Se devuelve la respuesta con lo guardado + datos sensibles en tránsito
   res.status(200).json({
     transaction: {
@@ -68,7 +63,9 @@ export const recharge = async (req: Request, res: Response) => {
       card_number: cardNumber,
       cvv,
     },
-    newBalance: currentBalance,
+    ...(snailPayResponse.status === "approved"
+      ? { new_balance: db.updateUserBalance(userId, amount) }
+      : {}),
   });
 };
 

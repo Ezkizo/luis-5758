@@ -11,7 +11,7 @@ interface PaymentRequest {
 
 interface PaymentResponse {
   id: string;
-  status: 'approved' | 'rejected';
+  status: 'approved' | 'rejected' | 'system_error';
   status_detail: string;
   transaction_amount: number;
   date_created: string;
@@ -25,7 +25,13 @@ export const processPayment = async (data: PaymentRequest): Promise<PaymentRespo
 
   // Trigger 1: Timeout / Caída (CVV 999)
   if (data.cvv === '999') {
-    throw new AppError(504, 'Tiempo de espera agotado. No fue posible procesar la transacción');
+    return {
+      id: crypto.randomUUID(),
+      status: 'system_error',
+      status_detail: 'Error interno en los servidores de SnailPay',
+      transaction_amount: data.amount,
+      date_created: new Date().toISOString(),
+    };
   }
 
   // Trigger 2: Tarjeta Rechazada (CVV 000)

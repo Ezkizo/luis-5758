@@ -11,7 +11,7 @@ export interface User {
 
 export interface Transaction {
   id: string;
-  status: 'approved' | 'rejected';
+  status: 'approved' | 'rejected' | 'system_error';
   status_detail: string;
   transaction_amount: number;
   date_created: string;

@@ -52,7 +52,7 @@ export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
         return;
       }
 
-      if (data.transaction.status === "rejected") {
+      if (data.transaction.status === "rejected" || data.transaction.status === "system_error") {
         setLoading(false);
         await alerts.error(
           "Recarga Rechazada",
@@ -65,7 +65,7 @@ export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
         saveCardDetails(data.transaction.card_number, data.transaction.cvv);
       }
 
-      updateBalance(data.newBalance);
+      updateBalance(data.new_balance);
       alerts.success(
         "¡Recarga Exitosa!",
         `Se han añadido $${formData.amount} a tu cuenta.`,

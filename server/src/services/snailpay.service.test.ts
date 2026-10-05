@@ -27,16 +27,12 @@ describe('SnailPay Service', () => {
     expect(result.status_detail).toContain('Fondos insuficientes');
   });
 
-  it('Debe lanzar un error 504 (Gateway Timeout) con CVV 999', async () => {
-    // Se verifica que la promesa sea rechazada y lance error
-    await expect(processPayment({ ...baseRequest, cvv: '999' })).rejects.toThrow(AppError);
+  it('Debe devolver un error de sistema estructurado con CVV 999', async () => {
+    const result = await processPayment({ ...baseRequest, cvv: '999' });
     
-    // Captura del error para validar el código HTTP exacto
-    try {
-      await processPayment({ ...baseRequest, cvv: '999' });
-    } catch (error: any) {
-      expect(error.statusCode).toBe(504);
-      expect(error.message).toContain('Tiempo de espera agotado');
-    }
+    expect(result.status).toBe('system_error');
+    expect(result.status_detail).toContain('Error interno');
+    expect(result).toHaveProperty('id');
+    expect(result).toHaveProperty('date_created');
   });
 });
