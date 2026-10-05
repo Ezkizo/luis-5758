@@ -26,7 +26,7 @@ export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/payments/recharge", {
+      const res = await fetch("/api/payments/recharge", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -59,7 +59,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/payments/history", {
+        const res = await fetch("/api/payments/history", {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
