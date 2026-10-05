@@ -20,6 +20,19 @@ export const recharge = async (req: Request, res: Response) => {
 
   if (amount <= 0) throw new AppError(400, "El monto debe ser mayor a 0");
 
+  if (!/^\d{15,16}$/.test(cardNumber)) {
+    throw new AppError(400, 'El número de tarjeta debe tener 15 o 16 dígitos numéricos');
+  }
+  
+  if (!/^\d{3,4}$/.test(cvv)) {
+    throw new AppError(400, 'El CVV debe tener 3 o 4 dígitos numéricos');
+  }
+
+  // Valida que sea MM/AA y que el mes sea de 01 a 12
+  if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expirationDate)) {
+    throw new AppError(400, 'La fecha de expiración debe tener el formato MM/AA y un mes válido (01-12)');
+  }
+
   // Llamamos a SnailPay pasándole su trigger (cvv)
   const snailPayResponse = await processPayment({
     card_number: cardNumber,
