@@ -65,7 +65,7 @@ export const recharge = async (req: Request, res: Response) => {
   res.status(200).json({
     transaction: {
       ...savedTx,
-      cardNumber,
+      card_number: cardNumber,
       cvv,
     },
     newBalance: currentBalance,

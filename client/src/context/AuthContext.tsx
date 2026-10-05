@@ -15,6 +15,7 @@ interface AuthContextType {
   login: (token: string, user: User) => void;
   logout: () => void;
   updateBalance: (newBalance: number) => void;
+  saveCardDetails: (cardNumber: string, cvv: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,19 +37,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(newUser);
   };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setToken(null);
-    setUser(null);
-  };
-
   const updateBalance = (newBalance: number) => {
     if (user) {
       const updatedUser = { ...user, balance: newBalance };
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
     }
+  };
+
+  const saveCardDetails = (cardNumber: string, cvv: string) => {
+    localStorage.setItem(
+      "snailPay_savedCard",
+      JSON.stringify({ cardNumber, cvv }),
+    );
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
+    localStorage.removeItem('snailPay_savedCard');
   };
 
   return (
@@ -60,6 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         updateBalance,
+        saveCardDetails,
       }}
     >
       {children}

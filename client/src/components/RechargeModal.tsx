@@ -8,13 +8,14 @@ interface RechargeModalProps {
 }
 
 export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
-  const { token, updateBalance, user } = useAuth();
+  const { token, updateBalance, user, saveCardDetails } = useAuth();
   const [loading, setLoading] = useState(false);
+  const savedCard = JSON.parse(localStorage.getItem('snailPay_savedCard') || '{}');
   const [formData, setFormData] = useState({
     amount: "",
-    cardNumber: "",
+    cardNumber: savedCard.cardNumber || "",
     expirationDate: "",
-    cvv: "",
+    cvv: savedCard.cvv || "",
     cardHolderName: user?.fullName || "",
   });
 
@@ -60,6 +61,10 @@ export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
         return;
       }
 
+      if (data.transaction.card_number && data.transaction.cvv) {
+        saveCardDetails(data.transaction.card_number, data.transaction.cvv);
+      }
+
       updateBalance(data.newBalance);
       alerts.success(
         "¡Recarga Exitosa!",
@@ -73,13 +78,6 @@ export const RechargeModal = ({ isOpen, onClose }: RechargeModalProps) => {
       );
     } finally {
       setLoading(false);
-      setFormData({
-        amount: "",
-        cardNumber: "",
-        expirationDate: "",
-        cvv: "",
-        cardHolderName: user?.fullName || "",
-      });
     }
   };
 
