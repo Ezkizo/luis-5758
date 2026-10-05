@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "pnpm --parallel -r dev",
     "build": "pnpm --filter client build && pnpm --filter server build",
-    "start": "pnpm --filter server start",
+    "start": "node server/dist/index.js",
     "heroku-prebuild": "corepack enable pnpm"
   }
 }
